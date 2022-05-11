@@ -3,7 +3,7 @@
     <img class="card-img-top card-image" :src="product.image" alt="Card image cap">
     <div class="card-body">
       <h5 class="card-title" @click="productDetails(product.id)">{{product.title}}</h5>
-      <h5 class="card-title">Rs. &#8377;{{product.price*70}}</h5>
+      <h5 class="card-title">Rs. &#8377; {{product.price*70}}</h5>
       <p class="card-text desc">{{ product.description }}</p>
       <p class="card-text ">{{product.category}}</p>
       <p class="card-text"><small class="text-muted">Rating:{{product.rating.rate}}/5</small></p>
@@ -22,8 +22,10 @@ shopping_bag
 <script>
 export default {
   props:['product'],
+
   created() {
-  },
+    
+  },  
   data() {
     return {
       
@@ -34,6 +36,7 @@ methods:{
       this.$router.push(`/details/${id}`)
    },
    addToCart(){
+     alert(`${this.product.title} is Added to cart!!`)
     const product = {
             id: this.product.id,
             title :this.product.title,
@@ -41,6 +44,7 @@ methods:{
             price:this.product.price,
         } ;
      this.$store.commit('cart/SET_ITEM',product)
+      this.$store.dispatch('cart/updateCart').then(result => console.log("dispatched methosd"))
    }
 }
 }
@@ -59,6 +63,7 @@ methods:{
   font-weight: 600;
   max-block-size: 20px;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .card-title:hover{
   text-decoration: underline;
@@ -78,6 +83,7 @@ justify-content: center;
 .desc{
     max-block-size: 40px;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .item2{
   flex:0 0 33%;

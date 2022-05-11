@@ -1,4 +1,5 @@
 <template>
+<the-header class="shadow-sm"></the-header>
   <div class="container">
     <div class="card shadow">
       <h5 class="card-title">{{product.title}}</h5>
@@ -7,9 +8,9 @@
         <h5 class="card-title">Rs. &#8377;{{product.price*70}}</h5>
         <p class="card-text desc">{{ product.description }}</p>
         <p class="card-text ">{{product.category}}</p>
-        <p class="card-text"><small class="text-muted">Rating:{{product.rating.rate}}/5</small></p>
+        <p class="card-text"><small class="text-muted">Rating:{{product.rating}}/5</small></p>
         <div class="d-flex" style="justify-content: space-around;">
-    <button class="btn btn-warning btn-text" type="button">Add to Cart! <span class="material-symbols-outlined">
+    <button class="btn btn-warning btn-text" type="button" @click="addToCart()">Add to Cart! <span class="material-symbols-outlined">
     add_shopping_cart
     </span></button>
     <button class="btn btn-primary" type="button">Buy Now!<span class="material-symbols-outlined">
@@ -18,26 +19,48 @@
     </div>
       </div>
     </div>
+    <router-link to="/">
+        <span class="material-symbols-outlined"> arrow_back </span> Back To
+        Shopping
+      </router-link>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import TheHeader from "../components/TheHeader.vue"
 export default {
-
-  created() {
-    const id = this.$route.params.id
-    fetch(`https://fakestoreapi.com/products/${id}`)
-            .then(res=>res.json())
-            .then(json=> this.product = json)
+  components:{
+    TheHeader
   },
+  async created() {
+    const id = this.$route.params.id
+    await axios.get(`https://fakestoreapi.com/products/${id}`)
+    .then(res =>{
+      console.log(res)
+      this.product = res.data;
+      this.product.rating = res.data.rating.rate
+    })
+    .catch(err => console.log(err))    
+    
+  },
+
   data() {
     return {
        product:{}, 
     }
   },
-methods:{
-   
-}
+  methods: {
+    addToCart(){
+      const product = {
+            id: this.product.id,
+            title :this.product.title,
+            img:this.product.image,
+            price:this.product.price,
+        } ;
+     this.$store.commit('cart/SET_ITEM',product)
+    }
+  },
 }
 </script>
 

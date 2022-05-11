@@ -1,4 +1,5 @@
 <template>
+<the-header class="shadow-sm"></the-header>
 <div class="layout">
    <div class="section1">
       <p class="sidebar-title">categories</p>
@@ -16,11 +17,12 @@
 
 <script>
 import ItemCard from "../components/ItemCard.vue"
-
+import TheHeader from "../components/TheHeader.vue"
+import { mapState } from "vuex"
 export default {
 components:{
    ItemCard,
-  
+   TheHeader
    
 },
 data() {
@@ -33,6 +35,12 @@ data() {
 created() {
    this.loadCategories()
    this.loadAllProducts()
+},
+computed:{
+   ...mapState('cart', ['cart']),
+   cart(){
+    console.log("cart chanf=ged")
+   }
 },
 methods:{
    loadCategories(){

@@ -18,17 +18,17 @@
   </div>
   
   
-  <a href="" class="  item">
-
+  <div class="  item">
     <div class="group">
       <i class="material-icons" >
         account_circle
       </i>
       <div class="detail">
-        Sign In
+        <button class="action-btn" v-if="!isAuthenticated" @click="login()">SIGN IN</button>
+        <button class="action-btn" v-if="isAuthenticated" @click="signout()">SIGN OUT</button>
       </div>
     </div>
-  </a>
+  </div>
 
   <a href="" class="item">
     <div class="group">
@@ -50,10 +50,19 @@
 import { mapGetters, mapState } from "vuex";
 
 export default {
-  
+  methods: {
+    login(){
+      this.$router.push("/login")
+    },
+    signout(){
+      console.log("logged out")
+      this.$store.dispatch('user/logout')
+    }
+  },
   computed:{
        ...mapState('cart', ['cart']),
         // ...mapState['cart/cart'],
+    ...mapGetters('user',['isAuthenticated']),
        data(){
          return this.cart
        }
@@ -210,5 +219,10 @@ export default {
   }
 
 
+}
+
+.action-btn{
+  background-color:transparent;
+  border: none;
 }
 </style>

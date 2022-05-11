@@ -1,6 +1,9 @@
+import axios from "axios"
+
 const state = {
     
-    cart:[]
+    cart:[],
+    total:0
 
 }
 
@@ -10,6 +13,9 @@ getCart(state){
 },
 itemsInCart(state){
     return state.cart.length
+},
+getTotal(state){
+    return state.total
 }
 }
 
@@ -42,24 +48,23 @@ const mutations = {
                 state.cart.splice(index,1)
             }
         })
+        
     },
-    GET_TOTAL: (state)=>{
-        let sum = 0
-        state.cart.forEach((each) => {
-           sum  = sum +  each.price
-        })
-        return sum
-    }
    
 };
 
 const actions = {
-      getTotal({state}){
-        let sum = 0
-        state.cart.forEach((each) => {
-           sum  = sum +  each.price
-        })
-        return sum
+      async updateCart({ commit,state}){
+          const tkn = localStorage.getItem('token')
+          if(tkn){
+            const key = localStorage.getItem('userkey')
+            console.log("updated cart",state.cart)
+            axios.put(`https://e-commerce-75633-default-rtdb.firebaseio.com/users/${key}/cart.json`,state.cart)
+//                       .then(res => console.log("cart upeded in firebase"))
+          }
+          else{
+              console.log("loginFirst")
+          }
       }
 };
 
@@ -70,3 +75,32 @@ export default {
     mutations,
     actions,
 };
+
+// async updateCart({ commit,state}){
+//     const tkn = localStorage.getItem('token')
+//     if(tkn){
+//       axios.get("https://e-commerce-75633-default-rtdb.firebaseio.com/users.json")
+//       .then((response) => {
+//           response = response.data
+//           const uid = localStorage.getItem("userId")
+//           console.log(response)
+//           for (var key in response) {
+//               if (response.hasOwnProperty(key)) {
+//                   if(response[key].email == uid){
+//                       axios.put(`https://e-commerce-75633-default-rtdb.firebaseio.com/users/${key}/cart.json`,state.cart)
+//                       .then(res => console.log("cart upeded in firebase"))
+//                       break;
+//                   }
+                  
+//               }
+//           }
+//       //    const resultObj = response.find((each) => {
+//       //         return each.email == localStorage.getItem(userId)
+//       //     })
+//       //    console.log(resultObj)
+//       })
+//     }
+//     else{
+//         console.log("loginFirst")
+//     }
+// }
