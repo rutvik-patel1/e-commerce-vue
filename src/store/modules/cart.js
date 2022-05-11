@@ -76,31 +76,4 @@ export default {
     actions,
 };
 
-// async updateCart({ commit,state}){
-//     const tkn = localStorage.getItem('token')
-//     if(tkn){
-//       axios.get("https://e-commerce-75633-default-rtdb.firebaseio.com/users.json")
-//       .then((response) => {
-//           response = response.data
-//           const uid = localStorage.getItem("userId")
-//           console.log(response)
-//           for (var key in response) {
-//               if (response.hasOwnProperty(key)) {
-//                   if(response[key].email == uid){
-//                       axios.put(`https://e-commerce-75633-default-rtdb.firebaseio.com/users/${key}/cart.json`,state.cart)
-//                       .then(res => console.log("cart upeded in firebase"))
-//                       break;
-//                   }
-                  
-//               }
-//           }
-//       //    const resultObj = response.find((each) => {
-//       //         return each.email == localStorage.getItem(userId)
-//       //     })
-//       //    console.log(resultObj)
-//       })
-//     }
-//     else{
-//         console.log("loginFirst")
-//     }
-// }
+
